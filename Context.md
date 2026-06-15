@@ -1,13 +1,13 @@
-# ARIA Project - Concise Context
+# Domly Project - Concise Context
 
-**Project Name:** ARIA (AI-Powered Voice-Controlled Smart Home)  
+**Project Name:** Domly (AI-Powered Voice-Controlled Smart Home)  
 **Duration:** 4 weeks  
 **Team:** 2 developers  
 **Status:** Ready to start
 
 ---
 
-## WHAT IS ARIA?
+## WHAT IS Domly?
 
 A **voice-controlled smart home system** where you speak commands and Claude AI controls your home devices.
 
@@ -16,7 +16,7 @@ A **voice-controlled smart home system** where you speak commands and Claude AI 
 ```
 You: "Turn on living room lights and set temperature to 72"
          ↓
-ARIA captures voice
+Domly captures voice
          ↓
 Claude understands intent
          ↓
@@ -67,7 +67,7 @@ Your devices physically respond
 
 ## TWO SEPARATE CODE REPOSITORIES
 
-### **Repository 1: aria-smartrent-mcp**
+### **Repository 1: domly-smartrent-mcp**
 
 **What:** Remote MCP server (the brain)  
 **Where:** Cloud (Railway.app)  
@@ -91,7 +91,7 @@ Your devices physically respond
 
 ---
 
-### **Repository 2: aria-voice-assistant**
+### **Repository 2: domly-voice-assistant**
 
 **What:** Desktop voice app (the interface)  
 **Where:** Your MacBook  
@@ -113,7 +113,7 @@ Your devices physically respond
 
 ## 4-WEEK BUILD PLAN
 
-### **Week 1-2: Build Backend (aria-smartrent-mcp)**
+### **Week 1-2: Build Backend (domly-smartrent-mcp)**
 
 **Person A Lead**
 
@@ -125,7 +125,7 @@ Day-by-day:
 - **Day 5-6:** Test everything locally
 - **Day 6-7:** Deploy to Railway.app (go live!)
 
-**Result:** Live server at `https://aria-smartrent-[yourname].railway.app`
+**Result:** Live server at `https://domly-smartrent-[yourname].railway.app`
 
 ---
 
@@ -142,7 +142,7 @@ Day-by-day:
 
 ---
 
-### **Week 3-4: Build Frontend (aria-voice-assistant)**
+### **Week 3-4: Build Frontend (domly-voice-assistant)**
 
 **Person A Lead**
 
@@ -207,10 +207,10 @@ Step 1: Build locally
         └─ Code on your MacBook
 
 Step 2: Deploy backend to Railway
-        └─ aria-smartrent-mcp runs in cloud 24/7
+        └─ domly-smartrent-mcp runs in cloud 24/7
 
 Step 3: Run frontend locally
-        └─ aria-voice-assistant runs on your MacBook
+        └─ domly-voice-assistant runs on your MacBook
 
 Step 4: They communicate via internet
         └─ Desktop app → Remote MCP server → SmartRent devices
@@ -257,8 +257,8 @@ Get these:
 
 Create:
 
-- [ ] GitHub repo: aria-smartrent-mcp
-- [ ] GitHub repo: aria-voice-assistant
+- [ ] GitHub repo: domly-smartrent-mcp
+- [ ] GitHub repo: domly-voice-assistant
 
 Decide:
 
@@ -274,7 +274,7 @@ Decide:
 
 ```
 Person A:
-- Clone aria-smartrent-mcp
+- Clone domly-smartrent-mcp
 - Set up Python virtual environment
 - Create basic Flask app
 - Verify it runs on localhost:5000
@@ -312,7 +312,7 @@ When you finish, you have:
 
 **Interview story:**
 
-> "I built ARIA, a voice-controlled smart home system. It has two parts: a remote MCP server on the cloud that defines smart home tools, and a desktop voice app. When you speak a command, the app transcribes it with Whisper, sends to Claude API which calls my server tools, and the server controls SmartRent devices. Then the response converts to speech and plays back. The whole system is production-grade with error handling and logging."
+> "I built Domly, a voice-controlled smart home system. It has two parts: a remote MCP server on the cloud that defines smart home tools, and a desktop voice app. When you speak a command, the app transcribes it with Whisper, sends to Claude API which calls my server tools, and the server controls SmartRent devices. Then the response converts to speech and plays back. The whole system is production-grade with error handling and logging."
 
 ---
 
