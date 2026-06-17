@@ -4,11 +4,10 @@ version = "0.1.0"
 description = "Python voice/AI core for the Domly desktop assitance"
 requires-python = ">=3.10"
 dependencies = [
-    "websockets",
+     "websockets",
     "sounddevice",
     "numpy",
-    "pvporcupine",
-    "pyaudio",
+    "openwakeword",
     "resemblyzer",
     "openai",
     "anthropic",
