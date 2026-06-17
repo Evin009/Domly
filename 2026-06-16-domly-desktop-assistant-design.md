@@ -16,11 +16,11 @@ This supersedes the older `Context.md` in this repo, which described a simpler 2
 
 | Task | Repo | Owner | Stack |
 |---|---|---|---|
-| Desktop App | `domly-desktop` | You (+ TBD split on Electron vs Python sidecar implementation) | Electron (UI) + Python sidecar (voice/MCP core) |
-| Backend / Auth | `domly-backend` | Friend | Node.js, Express, MongoDB |
+| Python Sidecar (voice/AI core) | `domly-desktop` (python/ subfolder) | You | Python — wake word, STT, Claude orchestration, `smartrent-mcp`, TTS |
+| Electron UI + Backend/Auth | `domly-desktop` (electron/ subfolder) + `domly-backend` | Friend | Electron, Node.js, Express, MongoDB |
 | Landing Page | `domly-landing` | Both | React / Next.js |
 
-The exact internal split of `domly-desktop` between Electron UI work and Python voice/MCP work is deferred — to be decided as its own follow-up planning task once this spec is approved.
+Finalized split: you own the Python sidecar exclusively. Your friend owns the Electron UI (tray icon, login window, conversation history window) and the backend (auth, credential storage). The two halves of `domly-desktop` communicate over a local WebSocket connection (see IPC section below).
 
 ---
 
@@ -49,15 +49,37 @@ SmartRent API → user's real devices
 ### Startup
 1. Electron main process launches
 2. Spawns Python sidecar as a background process
-3. Electron UI and Python sidecar communicate over a local connection (WebSocket or local HTTP, exact mechanism TBD in implementation plan)
-4. If no cached credentials → show login window
+3. Python sidecar starts a local WebSocket server (e.g. `ws://127.0.0.1:8765`)
+4. Electron connects to it as a WebSocket client
+5. If no cached credentials → Electron shows login window
+
+### IPC — WebSocket Contract (Python sidecar ↔ Electron)
+
+The Python sidecar is the WebSocket **server**; Electron is the **client**. Messages are JSON.
+
+**Electron → Sidecar:**
+```json
+{ "type": "set_credentials", "sr_email": "...", "sr_password": "..." }
+{ "type": "mute" }
+{ "type": "unmute" }
+{ "type": "quit" }
+```
+
+**Sidecar → Electron (status pushes):**
+```json
+{ "type": "status", "state": "idle" | "listening" | "processing" | "speaking" | "error" }
+{ "type": "conversation_event", "role": "user" | "assistant", "text": "..." }
+{ "type": "error", "message": "..." }
+```
+
+This contract is the boundary between your work and your friend's — as long as both sides honor it, you can each build and test independently before integrating.
 
 ### Login (first run only)
 1. User enters email/password in Electron login window
 2. Electron calls `domly-backend` `/auth/login`
 3. Backend returns SmartRent credentials (decrypted, over HTTPS)
-4. Electron passes credentials to Python sidecar
-5. Credentials cached locally (encrypted) so user isn't asked again on next launch
+4. Electron sends `set_credentials` message to Python sidecar over WebSocket
+5. Sidecar caches credentials locally (encrypted) so it doesn't need them resent on next launch
 
 ### Background Listening (steady state)
 1. Python sidecar runs a wake word engine (e.g. Porcupine) continuously, listening for "Hey Domly"
