@@ -1,0 +1,19 @@
+{
+  "name": "domly-desktop",
+  "version": "0.1.0",
+  "description": "Domly voice-controlled smart home desktop app",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^28.2.0",
+    "electron-vite": "^2.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vite": "^5.1.4"
+  }
+}
