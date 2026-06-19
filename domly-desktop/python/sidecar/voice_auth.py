@@ -37,3 +37,13 @@ def enroll_voice(audio_samples: list[bytes], sample_rate: int = 16000) -> bytes:
     data = embedding_to_bytes(average_embedding)
     storage.save_voice_embedding(data)
     return data
+
+def verify_voice(audio: bytes, enrolled_embedding: bytes, sample_rate: int = 16000, threshold: float = 0.75) -> bool:
+    encoder = _get_encoder()
+    audio_array = np.frombuffer(audio, dtype=np.int16).astype(np.float32) / 32768.0
+    wav = preprocess_wav(audio_array, source_sr=sample_rate)
+    live_embedding = encoder.embed_utterance(wav)
+
+    enrolled = bytes_to_embedding(enrolled_embedding)
+    similarity = np.dot(live_embedding, enrolled) / (np.linalg.norm(live_embedding) * np.linalg.norm(enrolled))
+    return bool(similarity >= threshold)
