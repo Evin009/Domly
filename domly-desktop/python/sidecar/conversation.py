@@ -29,15 +29,18 @@ class ConversationManager:
             await server.broadcast({"type": "status", "state": "idle"})
             return
 
-        await server.broadcast({"type": "status", "state": "processing"})
-        text = self.transcribe_fn(command_audio)
-        await server.broadcast({"type": "conversation_event", "role": "user", "text": text})
+        try:
+            await server.broadcast({"type": "status", "state": "processing"})
+            text = self.transcribe_fn(command_audio)
+            await server.broadcast({"type": "conversation_event", "role": "user", "text": text})
 
-        response = await self.ask_claude_fn(text)
-        await server.broadcast({"type": "conversation_event", "role": "assistant", "text": response})
+            response = await self.ask_claude_fn(text)
+            await server.broadcast({"type": "conversation_event", "role": "assistant", "text": response})
 
-        await server.broadcast({"type": "status", "state": "speaking"})
-        self.speak_fn(response)
+            await server.broadcast({"type": "status", "state": "speaking"})
+            self.speak_fn(response)
+        except Exception as e:
+            await server.broadcast({"type": "error", "message": str(e)})
 
         await server.broadcast({"type": "status", "state": "idle"})
 
